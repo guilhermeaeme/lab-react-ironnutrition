@@ -10,6 +10,7 @@ import FoodBox from './components/FoodBox';
 class App extends Component {
   state = {
     search: "",
+    allFoods: foods,
     filteredFoods: foods,
     cart: [],
     total: 0
@@ -19,7 +20,7 @@ class App extends Component {
     const { name, value } = event.target;
     this.setState({[name]: value});
 
-    let newFoods = [...foods];
+    let newFoods = [...this.state.allFoods];
 
     if(name == "search") {
       if(value != "") {
@@ -79,7 +80,7 @@ class App extends Component {
             <div className="column">
               {this.state.filteredFoods.map((food, index) => {
                 return (
-                  <FoodBox key={index} food={food} handleAdd={(food, quantity) => this.handleAdd(food, quantity)} />
+                  <FoodBox key={food.name} food={food} handleAdd={(food, quantity) => this.handleAdd(food, quantity)} />
                 )
               })}
             </div>
