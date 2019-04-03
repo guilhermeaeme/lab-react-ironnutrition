@@ -26,11 +26,23 @@ class App extends Component {
     newFood.quantity = quantity;
     newFood.total = quantity * food.calories;
 
-    newCart.push(newFood);
+    let push = true;
+
+    newCart.forEach(item => {
+      if(item.name == newFood.name) {
+        push = false;
+        item.quantity += newFood.quantity;
+        item.total += newFood.total;
+      }
+    });
+
+    if(push) {
+      newCart.push(newFood);
+    }
 
     let total = newCart.reduce((acc, item) => {
       return acc + item.total;
-    }, 0)
+    }, 0);
     
     this.setState({
       cart: newCart,
@@ -59,11 +71,13 @@ class App extends Component {
 
             <div className="column content">
               <h2 className="subtitle">Today's foods</h2>
-              {this.state.cart.map((food, index) => {
-                return (
-                  <li key={index}>{food.quantity} {food.name} = {food.total} cal</li>
-                )
-              })}
+              <ul>
+                {this.state.cart.map((food, index) => {
+                  return (
+                    <li key={index}>{food.quantity} {food.name} = {food.total} cal</li>
+                  )
+                })}
+              </ul>
               <strong>Total: {this.state.total} cal</strong>
             </div>
           </div>
