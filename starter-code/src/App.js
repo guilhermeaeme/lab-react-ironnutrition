@@ -102,17 +102,21 @@ class App extends Component {
 
             <div className="column content">
               <h2 className="subtitle">Today's foods</h2>
-              <ul>
+              <nav className="panel">
                 {this.state.cart.map((food, index) => {
                   return (
-                    <li key={index}>
-                      <button class="button is-small is-danger" onClick={() => this.handleDelete(index)}>-</button>&nbsp;
-                      <span>{food.quantity} {food.name} = {food.total} cal</span>
-                    </li>
+                    <div className="panel-block" key={index}>
+                      <div className="control">
+                        <span>{food.quantity} {food.name} = {food.total} cal</span>
+                        <button className="button is-small is-danger is-pulled-right" onClick={() => this.handleDelete(index)}>-</button>&nbsp;
+                      </div>
+                    </div>
                   )
                 })}
-              </ul>
-              <strong>Total: {this.state.total} cal</strong>
+                <div className="panel-block">
+                  <strong>Total: {this.state.total} cal</strong>
+                </div>
+              </nav>
             </div>
           </div>
 
