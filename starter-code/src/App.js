@@ -66,6 +66,21 @@ class App extends Component {
     });
   }
 
+  handleDelete(index) {
+    let newCart = [...this.state.cart];
+
+    newCart.splice(index, 1);
+
+    let total = newCart.reduce((acc, item) => {
+      return acc + item.total;
+    }, 0);
+    
+    this.setState({
+      cart: newCart,
+      total
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -90,7 +105,10 @@ class App extends Component {
               <ul>
                 {this.state.cart.map((food, index) => {
                   return (
-                    <li key={index}>{food.quantity} {food.name} = {food.total} cal</li>
+                    <li key={index}>
+                      <button class="button is-small is-danger" onClick={() => this.handleDelete(index)}>-</button>&nbsp;
+                      <span>{food.quantity} {food.name} = {food.total} cal</span>
+                    </li>
                   )
                 })}
               </ul>
