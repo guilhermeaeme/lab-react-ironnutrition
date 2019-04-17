@@ -6,6 +6,7 @@ import './App.css';
 import foods from './foods.json';
 
 import FoodBox from './components/FoodBox';
+import FoodCreate from './components/FoodCreate';
 
 class App extends Component {
   state = {
@@ -20,19 +21,23 @@ class App extends Component {
     const { name, value } = event.target;
     this.setState({[name]: value});
 
+    if(name === "search") {
+      this.handleFilter(value);
+    }
+  }
+
+  handleFilter(query) {
     let newFoods = [...this.state.allFoods];
 
-    if(name == "search") {
-      if(value != "") {
-        newFoods = newFoods.filter(item => {
-          return item.name.toLowerCase().includes(value.toLowerCase());
-        })
-      }
-
-      this.setState({
-        filteredFoods: newFoods
-      });
+    if(query != "") {
+      newFoods = newFoods.filter(item => {
+        return item.name.toLowerCase().includes(query.toLowerCase());
+      })
     }
+
+    this.setState({
+      filteredFoods: newFoods
+    });
   }
   
   handleAdd(food, quantity) {
@@ -81,6 +86,20 @@ class App extends Component {
     });
   }
 
+  handleCreateFood(food) {
+    let newFoods = [...foods];
+
+    newFoods.unshift({
+      name: food.name,
+      calories: food.calories,
+      image: food.image
+    });
+
+    this.setState({
+      allFoods: newFoods
+    }, () => this.handleFilter(this.state.search));
+  }
+
   render() {
     return (
       <div className="App">
@@ -100,6 +119,8 @@ class App extends Component {
               })}
             </div>
 
+            <hr/>
+
             <div className="column content">
               <h2 className="subtitle">Today's foods</h2>
               <nav className="panel">
@@ -117,6 +138,8 @@ class App extends Component {
                   <strong>Total: {this.state.total} cal</strong>
                 </div>
               </nav>
+
+              <FoodCreate createFood={(food) => this.handleCreateFood(food)} />
             </div>
           </div>
 
